@@ -226,7 +226,7 @@ module ``03: Putting the Function into Functional Programming`` =
         let b x = x = 7.5
         a |> should be ofType<float -> float>
         b |> should be ofType<float -> bool>
-        __ |> __ |> __ |> should equal true
+        a 1.2 |> a |> b |> should equal true
 
     (*
         The backwards-pipe operator takes:
@@ -247,7 +247,7 @@ module ``03: Putting the Function into Functional Programming`` =
         let a x =
             x = 4
         not (a 4) |> should equal false
-        (__ __ a 4) |> should equal false // <-- put <| in one of the spaces to fill in
+        (not <| a 4) |> should equal false // <-- put <| in one of the spaces to fill in
 
     (*
         The compose operator takes:
