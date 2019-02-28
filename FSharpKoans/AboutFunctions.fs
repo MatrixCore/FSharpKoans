@@ -66,7 +66,7 @@ module ``03: Putting the Function into Functional Programming`` =
                 let p = 3 in
                     who * p
         in
-            jorus 12 |> should equal 60
+            jorus 12 |> should equal 36
 
     // The next few are very similar.  Resist the temptation to
     // just fill out values without having any idea about what's
