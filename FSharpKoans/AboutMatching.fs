@@ -21,7 +21,7 @@ module ``04: Match expressions`` =
     let ``02 Match expressions are expressions, not statements`` () =
         let result =
             match 9001 with
-            | FILL_ME__IN -> // <-- use an identifier pattern here!
+            | 9001 -> // <-- use an identifier pattern here!
                 match 9001 + 1000 with
                 | 10001 -> "Hah! It's a palindromic number!"
                 | x -> "Some number."
