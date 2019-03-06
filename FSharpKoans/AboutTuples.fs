@@ -51,3 +51,5 @@ module ``06: Tuples`` =
         let name, _, _, weapon_name = "Shinji", 9103, true, "Unit 01"
         name |> should equal "Shinji"
         weapon_name |> should equal "Unit 01"
+
+        //Get in the fucking robot Shinji!

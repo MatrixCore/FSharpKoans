@@ -247,7 +247,7 @@ module ``03: Putting the Function into Functional Programming`` =
         let a x =
             x = 4
         not (a 4) |> should equal false
-        (not <| a 4) |> should equal false // <-- put <| in one of the spaces to fill in
+        not <| a 4 |> should equal false // <-- put <| in one of the spaces to fill in
 
     (*
         The compose operator takes:
