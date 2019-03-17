@@ -46,8 +46,8 @@ module ``08: The Good Kind of Discrimination`` =
             | BPharm -> "Meh, it's OK."
             | BCom (Management, Economics) | BCom (Linguistics, Management) -> "Money, money, money."
             | BA (Linguistics, Philosophy) -> "A thinker, eh?"
-        randomOpinion BSc (_, ComputerScience) | BSc (ComputerScience, _) |> should equal "Good choice!"
-        randomOpinion BSc _ |> should equal "!!SCIENCE!!"
+        randomOpinion BSc (Mathematics, ComputerScience) | BSc (ComputerScience, Mathematics) |> should equal "Good choice!"
+        //randomOpinion BSc _ |> should equal "!!SCIENCE!!"
         randomOpinion (BCom (Management, Economics)) |> should equal "Money, money, money."
         randomOpinion (BCom (Linguistics, Management)) |> should equal "Money, money, money."
         randomOpinion (BA (Linguistics, Philosophy)) |> should equal "A thinker, eh?"
@@ -55,7 +55,7 @@ module ``08: The Good Kind of Discrimination`` =
 
     type EquipmentStatus =
     | Available
-    | Broken of int // takes an int, gives back en EquipmentStatus
+    | Broken of int // takes an int, gives back an EquipmentStatus
     | Rented of string
 
     [<Test>]
@@ -74,7 +74,7 @@ module ``08: The Good Kind of Discrimination`` =
             | Empty -> 0
             | Node (_, a, b) -> 1 + max (depth a) (depth b)
         let a = Node ("One", 
-        Node ("Two", 
-        Node ("Three", 
-        Node ("Four", Empty, Empty) ,Empty), Empty), Empty)
+                    Node ("Two", 
+                        Node ("Three", 
+                            Node ("Four", Empty, Empty), Empty), Empty), Empty)
         depth a |> should equal 4
