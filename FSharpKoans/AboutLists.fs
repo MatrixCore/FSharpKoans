@@ -9,7 +9,7 @@ Lists are immutable, ordered, finite sequences of a single type.
 module ``12: I Have Here In My Hand A List`` = 
     [<Test>]
     let ``01 Creating a list (Syntax 1).`` () = 
-        let myList = [ __; __; __; __ ]
+        let myList = [ "apple"; "grape"; "pear"; "biscuit" ]
         myList |> should equal [ "apple"; "grape"; "pear"; "biscuit" ]
    
     [<Test>]
@@ -27,7 +27,7 @@ module ``12: I Have Here In My Hand A List`` =
     let ``03 Creating a list (via concatenation).`` () =
         let a = [902; 10]
         let b = [3; 13; 37]
-        let result = __ @ __
+        let result = a @ b
         result |> should equal [902; 10; 3; 13; 37]
 
     [<Test>]
