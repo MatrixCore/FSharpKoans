@@ -2,27 +2,29 @@
 open NUnit.Framework
 
 module ``13: String manipulation`` =
+    open System.Linq.Expressions
+
     [<Test>]
     let ``01 Finding the length of a string`` () =
         let a = "calamari"
         let b = "It's-a me, Maaario!"
-        String.FILL_ME_IN a |> should equal 8
-        String.FILL_ME_IN b |> should equal 19
+        String.length a |> should equal 8
+        String.length b |> should equal 19
 
     [<Test>]
     let ``02 Getting a substring (Part 1).`` () =
         let a = "bright"
-        a.[1..] |> should equal __
+        a.[1..] |> should equal "right"
 
     [<Test>]
     let ``03 Getting a substring (Part 2).`` () =
         let a = "bright"
-        a.[..3] |> should equal __
+        a.[..3] |> should equal "brig"
 
     [<Test>]
     let ``04 Getting a substring (Part 3).`` () =
         let a = "bright"
-        a.[1..3] |> should equal __
+        a.[1..3] |> should equal "rig"
 
     [<Test>]
     let ``05 Concatenating strings`` () =
