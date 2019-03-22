@@ -29,7 +29,7 @@ module ``14: List operations are so easy, you could make them yourself!`` =
     [<Test>]
     let ``01 Finding the length of a list, the hard way`` () =
         let length (xs : 'a list) : int =
-            __ // write a function to find the length of a list
+            xs.Length // write a function to find the length of a list
         length [9;8;7] |> should equal 3
         length [] |> should equal 0
         length ["Le Comte de Monte-Cristo"] |> should equal 1
