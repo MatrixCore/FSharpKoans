@@ -122,7 +122,7 @@ module ``10: Parametric polymorphism`` =
         let b = Thrid (fun k -> true, k, 8)
         // how do you write a generic type?
         a |> should be ofType<GenericDiscriminatedUnionExample<float, int>>
-        b |> should be ofType<GenericDiscriminatedUnionExample<'a -> bool ,int>>
+        b |> should be ofType<GenericDiscriminatedUnionExample<'a, bool>>
 
     type MyDiscriminatedUnion<'a, 'b> =
     | Furoth of 'a
