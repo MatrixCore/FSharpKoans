@@ -43,12 +43,12 @@ module ``11: Exploring types, options, and results`` =
 
     [<Test>]
     let ``01 Type annotations for function types`` () =
-        let a (x:FILL_ME_IN) (y:FILL_ME_IN) = x + y
-        let b (x:FILL_ME_IN) (y:FILL_ME_IN) = x + y
+        let a (x:string) (y:string) = x + y
+        let b (x:float) (y:float) = x + y
         a |> should be ofType<string -> string -> string>
         b |> should be ofType<float -> float -> float>
-        a __ __ |> should equal "skipping"
-        b __ __ |> should equal 1.02
+        a "skip" "ping" |> should equal "skipping"
+        b 0.51 0.51 |> should equal 1.02
 
     [<Test>]
     let ``02 We can use a type annotation for a function's output`` () =
