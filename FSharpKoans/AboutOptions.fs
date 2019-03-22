@@ -52,8 +52,8 @@ module ``11: Exploring types, options, and results`` =
 
     [<Test>]
     let ``02 We can use a type annotation for a function's output`` () =
-        let k a b : FILL_ME_IN = a * b
-        k __ __ |> should equal 15.0 
+        let k a b : float = a * b
+        k 5.0 3.0 |> should equal 15.0 
 
     [<Test>]
     let ``03 Basic Option example`` () =
