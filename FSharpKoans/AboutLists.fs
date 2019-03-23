@@ -57,7 +57,7 @@ module ``12: I Have Here In My Hand A List`` =
         let fruits = ["apple"; "peach"; "orange"; "watermelon"; "pineapple"; "tomato"]
         let _::d::e = fruits
         d |> should equal "peach"
-        e |> should equal "orange"
+        e |> should equal [ "orange"; "watermelon"; "pineapple"; "tomato"]
 
     [<Test>]
     let ``08 Pattern-matching a list (Part 4).`` () =
@@ -70,7 +70,7 @@ module ``12: I Have Here In My Hand A List`` =
     let ``09 Pattern-matching a list (Part 5).`` () =
         let fruits = ["apple"; "peach"; "orange"; "watermelon"; "pineapple"; "tomato"]
         let _::_::_::h = fruits
-        h |> should equal "watermelon"
+        h |> should equal [ "watermelon"; "pineapple"; "tomato" ]
 
     [<Test>]
     let ``10 Pattern-matching a list (Part 6).`` () =

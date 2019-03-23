@@ -90,7 +90,7 @@ module ``13: String manipulation`` =
    // double-up a % to get a % in.
     [<Test>]
     let ``13 String formatting: Putting a '%' sign in`` () =
-        let result = sprintf "I scored %f% on the test" 94.43 
+        let result = sprintf "I scored %.2f%% on the test" 94.43 
         result |> should equal "I scored 94.43% on the test"
 
     [<Test>]
@@ -106,10 +106,10 @@ module ``13: String manipulation`` =
     [<Test>]
     let ``15 You can use the "usual" C# string methods from F#`` () =
         let s = "  Dr Phil, PhD, MD, MC, Medicine Man  "
-        let ``first index of 'P'`` = s.FILL_ME_IN
-        let ``last index of 'P'`` = s.FILL_ME_IN
-        let ``lowercase version`` = s.FILL_ME_IN
-        let ``without surrounding space`` = s.FILL_ME_IN
+        let ``first index of 'P'`` = s.IndexOf('P')
+        let ``last index of 'P'`` = s.LastIndexOf('P')
+        let ``lowercase version`` = s.ToLower()
+        let ``without surrounding space`` = s.Trim()
         ``first index of 'P'`` |> should equal 5
         ``last index of 'P'`` |> should equal 11
         ``lowercase version`` |> should equal "  dr phil, phd, md, mc, medicine man  "
