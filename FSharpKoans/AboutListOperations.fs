@@ -29,7 +29,12 @@ module ``14: List operations are so easy, you could make them yourself!`` =
     [<Test>]
     let ``01 Finding the length of a list, the hard way`` () =
         let length (xs : 'a list) : int =
-            __ // write a function to find the length of a list
+            let rec innerLength xs out num =
+              match xs with
+              | [] -> num
+              | _::rest -> innerLength rest (1::out) (num+1) // write a function to find the length of a list
+            innerLength xs [] 0
+
         length [9;8;7] |> should equal 3
         length [] |> should equal 0
         length ["Le Comte de Monte-Cristo"] |> should equal 1
@@ -38,12 +43,17 @@ module ``14: List operations are so easy, you could make them yourself!`` =
     // Hint: https://msdn.microsoft.com/en-us/library/ee340354.aspx
     [<Test>]
     let ``02 Finding the length of a list, the easy way`` () =
-        __ [ 9;8;5;8;45 ] |> should equal 5
+        List.length [ 9;8;5;8;45 ] |> should equal 5
 
     [<Test>]
     let ``03 Reversing a list, the hard way`` () =
-        let rev (xs : 'a list) : 'a list =
-            __ // write a function to reverse a list here.
+        let rev (xs : 'a list) : 'a list = 
+            let rec innerRev xs out =
+                match xs with
+                  | [] -> out
+                  | c::rest -> innerRev rest (c::out)
+            innerRev xs [] // write a function to reverse a list here.
+
         rev [9;8;7] |> should equal [7;8;9]
         rev [] |> should equal []
         rev [0] |> should equal [0]
@@ -52,15 +62,20 @@ module ``14: List operations are so easy, you could make them yourself!`` =
     // Hint: https://msdn.microsoft.com/en-us/library/ee340277.aspx
     [<Test>]
     let ``04 Reversing a list, the easy way`` () =
-        __ [ 9;8;7 ] |> should equal [7;8;9]
-        __ [] |> should equal []
-        __ [0] |> should equal [0]
-        __ [9;8;5;8;45] |> should equal [45;8;5;8;9]
+        List.rev [ 9;8;7 ] |> should equal [7;8;9]
+        List.rev [] |> should equal []
+        List.rev [0] |> should equal [0]
+        List.rev [9;8;5;8;45] |> should equal [45;8;5;8;9]
 
     [<Test>]
     let ``05 Fixed-function mapping, the hard way (part 1).`` () =
         let map (xs : int list) : int list =
-            __ // write a function which adds 1 to each element
+            let rec innerMap xs out =
+                match xs with
+                  | [] -> out
+                  | c::rest -> innerMap rest (out @ [c + 1])
+            innerMap xs [] // write a function which adds 1 to each element
+
         map [1; 2; 3; 4] |> should equal [2; 3; 4; 5]
         map [9; 8; 7; 6] |> should equal [10; 9; 8; 7]
         map [15; 2; 7] |> should equal [16; 3; 8]
@@ -70,7 +85,12 @@ module ``14: List operations are so easy, you could make them yourself!`` =
     [<Test>]
     let ``06 Fixed-function mapping, the hard way (part 2).`` () =
         let map (xs : int list) : int list =
-            __ // write a function which doubles each element
+            let rec innerMap xs out =
+                match xs with
+                  | [] -> out
+                  | c::rest -> innerMap rest (out @ [c * 2])
+            innerMap xs [] // write a function which adds 1 to each element // write a function which doubles each element
+
         map [1; 2; 3; 4] |> should equal [2; 4; 6; 8]
         map [9; 8; 7; 6] |> should equal [18; 16; 14; 12]
         map [15; 2; 7] |> should equal [30; 4; 14]
@@ -89,7 +109,12 @@ module ``14: List operations are so easy, you could make them yourself!`` =
     [<Test>]
     let ``07 Specified-function mapping, the hard way`` () =
         let map (f : 'a -> 'b) (xs : 'a list) : 'b list =
-            __ // write a map which applies f to each element
+            let rec innerMap xs out =
+                match xs with
+                  | [] -> out
+                  | c::rest -> innerMap rest (out @ [(f c)])
+            innerMap xs [] // write a map which applies f to each element
+
         map (fun x -> x+1) [9;8;7] |> should equal [10;9;8]
         map ((*) 2) [9;8;7] |> should equal [18;16;14]
         map (fun x -> sprintf "%.2f wut?" x)  [9.3; 1.22] |> should equal ["9.30 wut?"; "1.22 wut?"]
@@ -97,14 +122,21 @@ module ``14: List operations are so easy, you could make them yourself!`` =
     // Hint: https://msdn.microsoft.com/en-us/library/ee370378.aspx
     [<Test>]
     let ``08 Specified-function mapping, the easy way`` () =
-        __ (fun x -> x+1) [9;8;7] |> should equal [10;9;8]
-        __ ((*) 2) [9;8;7] |> should equal [18;16;14]
-        __ (fun x -> sprintf "%.2f wut?" x)  [9.3; 1.22] |> should equal ["9.30 wut?"; "1.22 wut?"]
+        List.map (fun x -> x+1) [9;8;7] |> should equal [10;9;8]
+        List.map ((*) 2) [9;8;7] |> should equal [18;16;14]
+        List.map (fun x -> sprintf "%.2f wut?" x)  [9.3; 1.22] |> should equal ["9.30 wut?"; "1.22 wut?"]
 
     [<Test>]
     let ``09 Specified-function filtering, the hard way`` () =
         let filter (f : 'a -> bool) (xs : 'a list) : 'a list =
-            __ // write a function which filters based on the specified criteria
+             let rec innerFilter xs out =
+                match xs with
+                  | [] -> out
+                  | c::rest -> match (f c) with
+                                | true -> innerFilter rest (out @ [c])// write a function which filters based on the specified criteria
+                                | false -> innerFilter rest out
+             innerFilter xs []
+             
         filter (fun x -> x > 19) [9; 5; 23; 66; 4] |> should equal [23; 66]
         filter (fun x -> String.length x = 4) ["moo"; "woof"; "yip"; "nyan"; "meow"]
         |> should equal ["woof"; "nyan"; "meow"]
@@ -113,15 +145,22 @@ module ``14: List operations are so easy, you could make them yourself!`` =
     // Hint: https://msdn.microsoft.com/en-us/library/ee370294.aspx
     [<Test>]
     let ``10 Specified-function filtering, the easy way`` () =
-        __ (fun x -> x > 19) [9; 5; 23; 66; 4] |> should equal [23; 66]
-        __ (fun x -> String.length x = 4) ["moo"; "woof"; "yip"; "nyan"; "meow"]
+        List.filter (fun x -> x > 19) [9; 5; 23; 66; 4] |> should equal [23; 66]
+        List.filter (fun x -> String.length x = 4) ["moo"; "woof"; "yip"; "nyan"; "meow"]
         |> should equal ["woof"; "nyan"; "meow"]
-        __ (fun (a,b) -> a*b >= 14) [9,3; 4,2; 4,5] |> should equal [9,3; 4,5]
+        List.filter (fun (a,b) -> a*b >= 14) [9,3; 4,2; 4,5] |> should equal [9,3; 4,5]
 
     [<Test>]
     let ``11 Fixed-function filtering, the hard way`` () =
         let filter (xs : int list) : int list =
-            __ // write a function to filter for odd elements only.
+            let rec innerFilter xs out =
+                match xs with
+                  | [] -> out
+                  | c::rest -> match (c%2) with
+                                | 1 -> innerFilter rest (out @ [c])// write a function which filters based on the specified criteria
+                                | 0 -> innerFilter rest out
+            innerFilter xs [] // write a function to filter for odd elements only.
+
         filter [1; 2; 3; 4] |> should equal [1; 3]
         filter [10; 9; 8; 7] |> should equal [9; 7]
         filter [15; 2; 7] |> should equal [15; 7]
@@ -148,10 +187,10 @@ module ``14: List operations are so easy, you could make them yourself!`` =
     // Hint: https://msdn.microsoft.com/en-us/library/ee370294.aspx
     [<Test>]
     let ``13 Specified-function filtering, the easy way`` () =
-        __ (fun x -> x > 19) [9; 5; 23; 66; 4] |> should equal [23; 66]
-        __ (fun x -> String.length x = 4) ["moo"; "woof"; "yip"; "nyan"; "meow"]
+        List.filter (fun x -> x > 19) [9; 5; 23; 66; 4] |> should equal [23; 66]
+        List.filter (fun x -> String.length x = 4) ["moo"; "woof"; "yip"; "nyan"; "meow"]
         |> should equal ["woof"; "nyan"; "meow"]
-        __ (fun (a,b) -> a*b >= 14) [9,3; 4,2; 4,5] |> should equal [9,3; 4,5]
+        List.filter (fun (a,b) -> a*b >= 14) [9,3; 4,2; 4,5] |> should equal [9,3; 4,5]
 
 (*
 A 'fold' starts from a specified state, and generates more states depending
