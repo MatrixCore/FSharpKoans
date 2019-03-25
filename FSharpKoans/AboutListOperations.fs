@@ -159,6 +159,7 @@ module ``14: List operations are so easy, you could make them yourself!`` =
                   | c::rest -> match (c%2) with
                                 | 1 -> innerFilter rest (out @ [c])// write a function which filters based on the specified criteria
                                 | 0 -> innerFilter rest out
+                                | _ -> failwith "Wat"
             innerFilter xs [] // write a function to filter for odd elements only.
 
         filter [1; 2; 3; 4] |> should equal [1; 3]
@@ -178,7 +179,14 @@ module ``14: List operations are so easy, you could make them yourself!`` =
     [<Test>]
     let ``12 Specified-function filtering, the hard way`` () =
         let filter (f : 'a -> bool) (xs : 'a list) : 'a list =
-            __ // write a function which filters based on the specified criteria
+               let rec innerFilter xs out =
+                   match xs with
+                   | [] -> out
+                   | c::rest -> match (f c) with
+                                | true -> innerFilter rest (out @ [c])
+                                | false -> innerFilter rest out
+               innerFilter xs [] // write a function which filters based on the specified criteria
+
         filter (fun x -> x > 19) [9; 5; 23; 66; 4] |> should equal [23; 66]
         filter (fun x -> String.length x = 4) ["moo"; "woof"; "yip"; "nyan"; "meow"]
         |> should equal ["woof"; "nyan"; "meow"]
@@ -225,18 +233,28 @@ or something else), it's likely that you'll be able to use a fold.
     [<Test>]
     let ``14 A fold which sums a list`` () =
         let fold initialState xs =
-            __ // write a function to do what's described above
+            let rec innerFold xs out =
+              match xs with
+              | [] -> initialState + out
+              | a::rest -> innerFold rest (out + a)
+            innerFold xs 0 // write a function to do what's described above
+
         fold 0 [1; 2; 3; 4] |> should equal 10
         fold 100 [2;4;6;8] |> should equal 120
 
     [<Test>]
     let ``15 A fold which multiplies a list`` () =
         let fold initialState xs =
-            __ // write a function to multiply the elements of a list
-        fold __ [99] |> should equal 99
-        fold 2 [__] |> should equal 22
-        fold __ [1;3;5;7] |> should equal 105
-        fold __ [2;5;3] |> should equal 0
+            let rec innerFold xs out =
+                match xs with
+                | [] -> initialState * out
+                | a::rest -> innerFold rest (out * a)
+            innerFold xs 1 // write a function to multiply the elements of a list
+
+        fold 1 [99] |> should equal 99
+        fold 2 [11] |> should equal 22
+        fold 1 [1;3;5;7] |> should equal 105
+        fold 0 [2;5;3] |> should equal 0
 
     // you probably know the drill by now.  It'd be good to have
     // a function which does the state-generation stuff, wouldn't
@@ -255,17 +273,21 @@ or something else), it's likely that you'll be able to use a fold.
     // Hint: https://msdn.microsoft.com/en-us/library/ee353894.aspx
     [<Test>]
     let ``17 Folding, the easy way`` () =
-        __ (+) 0 [1;2;3;4] |> should equal 10
-        __ (*) 2 [1;2;3;4] |> should equal 48
-        __ (fun state item -> sprintf "%s %s" state item) "items:" ["dog"; "cat"; "bat"; "rat"]
+        List.fold (+) 0 [1;2;3;4] |> should equal 10
+        List.fold (*) 2 [1;2;3;4] |> should equal 48
+        List.fold (fun state item -> sprintf "%s %s" state item) "items:" ["dog"; "cat"; "bat"; "rat"]
         |> should equal "items: dog cat bat rat"
-        __ (fun state item -> state + float item + 0.5) 0.8 [1;3;5;7] |> should equal 18.8
+        List.fold (fun state item -> state + float item + 0.5) 0.8 [1;3;5;7] |> should equal 18.8
 
     // List.exists
     [<Test>]
     let ``18 exists: finding whether any matching item exists`` () =
         let exists (f : 'a -> bool) (xs : 'a list) : bool =
-            __ // Does this: https://msdn.microsoft.com/en-us/library/ee370309.aspx
+            let rec innerExists xs out =
+              match xs with
+              | [] -> out
+              | _::rest -> innerExists rest (1::out)
+            innerExists xs [] // Does this: https://msdn.microsoft.com/en-us/library/ee370309.aspx
         exists ((=) 4) [7;6;5;4;5] |> should equal true
         exists (fun x -> String.length x < 4) ["true"; "false"] |> should equal false
         exists (fun _ -> true) [] |> should equal false
