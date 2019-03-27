@@ -53,8 +53,8 @@ module ``15: Advanced techniques`` =
             match p < List.length scrollPositions && p >= 0 with
             | true -> scrollPositions.[p]
             | _ -> fun () -> "Nothing to do"
-        scrollPositions |> should be ofType<FILL_ME_IN>
-        getWorkAtPosition |> should be ofType<FILL_ME_IN>
+        scrollPositions |> should be ofType<(unit -> string) list>
+        getWorkAtPosition |> should be ofType<(int -> unit -> string)>
         getWorkAtPosition 3 |> should be ofType<FILL_ME_IN>
         (getWorkAtPosition 3) () |> should be ofType<FILL_ME_IN>
         getWorkAtPosition 250 |> should be ofType<FILL_ME_IN>

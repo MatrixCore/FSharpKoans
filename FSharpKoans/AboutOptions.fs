@@ -87,15 +87,15 @@ module ``11: Exploring types, options, and results`` =
     type ErrorReason =
     | DivisionByZero | NegativeNumberSupplied
 
-    [<Test>]
+    //[<Test>]
     let ``06 Using a Result to explain why things went wrong`` () =
         let f n m =
-            match n<0.0, m=0.0 with
+            match n < 0.0, m = 0.0 with
             | true, _ -> Error NegativeNumberSupplied
             | _, true -> Error DivisionByZero
-            | _ ->
+            | _ -> Ok (sqrt n / m)
                 // 'sqrt' is the square-root function
-                Ok (sqrt n / m)
+                
         f -6.0 2.5 |> should equal (Error NegativeNumberSupplied)
         f 144.0 2.0 |> should equal (Ok 6.0)
         f 7.3 0.0 |> should equal (Error DivisionByZero)
