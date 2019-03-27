@@ -60,7 +60,7 @@ module ``15: Advanced techniques`` =
         getWorkAtPosition 250 |> should be ofType<FILL_ME_IN>
         (getWorkAtPosition 250) () |> should be ofType<FILL_ME_IN>
         (getWorkAtPosition 5) () |> should equal __
-        (getWorkAtPosition -7) () |> should equal __
+        (getWorkAtPosition -7) () |> should equal "Nothing to do"
 
     (*
         Sometimes we want to do something purely for a side-effect
