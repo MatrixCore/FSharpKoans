@@ -297,7 +297,7 @@ or something else), it's likely that you'll be able to use a fold.
                   | c::rest -> match f c with 
                                 | true -> innerExists rest true
                                 | false -> innerExists rest false
-            innerExists xs false // Does this: https://msdn.microsoft.com/en-us/library/ee370309.aspx // Does this: https://msdn.microsoft.com/en-us/library/ee370309.aspx
+            innerExists xs false // Does this: https://msdn.microsoft.com/en-us/library/ee370309.aspx
         exists ((=) 4) [7;6;5;4;5] |> should equal true
         exists (fun x -> String.length x < 4) ["true"; "false"] |> should equal false
         exists (fun _ -> true) [] |> should equal false
