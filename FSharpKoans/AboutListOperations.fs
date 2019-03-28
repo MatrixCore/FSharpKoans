@@ -320,9 +320,9 @@ or something else), it's likely that you'll be able to use a fold.
         let c, d = partition (fun x -> String.length x < 4) ["woof"; "yip"; "moo"; "nyan"; "arf"]
         c |> should equal ["yip"; "moo"; "arf"]
         d |> should equal ["woof"; "nyan"]
-        //let e, f = partition (fun _ -> false) [9.2; 7.3; 11.8]
-        //e |> should equal []
-        //f |> should equal [9.2; 7.3; 11.8]
+        let e, f = partition (fun _ -> false) [9.2; 7.3; 11.8]
+        e |> should equal []
+        f |> should equal [9.2; 7.3; 11.8]
 
     // List.init
     [<Test>]
