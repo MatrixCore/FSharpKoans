@@ -55,11 +55,11 @@ module ``15: Advanced techniques`` =
             | _ -> fun () -> "Nothing to do"
         scrollPositions |> should be ofType<(unit -> string) list>
         getWorkAtPosition |> should be ofType<(int -> unit -> string)>
-        getWorkAtPosition 3 |> should be ofType<FILL_ME_IN>
-        (getWorkAtPosition 3) () |> should be ofType<FILL_ME_IN>
-        getWorkAtPosition 250 |> should be ofType<FILL_ME_IN>
+        getWorkAtPosition 3 |> should be ofType<(int -> unit -> string)>
+        (getWorkAtPosition 3) () |> should be ofType<int -> unit -> string>
+        getWorkAtPosition 250 |> should be ofType<int -> unit -> string>
         (getWorkAtPosition 250) () |> should be ofType<FILL_ME_IN>
-        (getWorkAtPosition 5) () |> should equal __
+        (getWorkAtPosition 5) () |> should equal "Load video"
         (getWorkAtPosition -7) () |> should equal "Nothing to do"
 
     (*
@@ -92,7 +92,7 @@ module ``15: Advanced techniques`` =
         // as above, but what do you do when the arguments aren't in the order
         // that you want them to be in?
         let f animal noise = animal + " says " + noise
-        let howl k = f k // <- multiple words on this line.  You MUST use `f`.
+        let howl k = f k "slash/crunch/snap"  // <- multiple words on this line.  You MUST use `f`.
         howl "dire wolf" |> should equal "dire wolf says slash/crunch/snap"
         howl "direr wolf" |> should equal "direr wolf says slash/crunch/snap"
 
@@ -101,7 +101,8 @@ module ``15: Advanced techniques`` =
         // Extending a bit more, what do you do when you want to apply a function,
         // but modify the result before you give it back?
         let f animal noise = animal + " says " + noise
-        let cows = __ // <-- multiple words on this line, or you may want to make this a multi-line thing.  You MUST use `f`.
+        let cows = fun x word -> "cow says " + word + ", de gozaru" // <-- multiple words on this line, or you may want to make this a multi-line thing.  You MUST use `f`.
+        let a = cows "moo"
         cows "moo" |> should equal "cow says moo, de gozaru"
         cows "MOOooOO" |> should equal "cow says MOOooOO, de gozaru"
 
@@ -111,8 +112,8 @@ module ``15: Advanced techniques`` =
             let middle = (final - initial) / 2
             fun t -> t-middle, t+middle
         // note the number of inputs provided below.  Do you see why I can do this?
-        calculate 10 20 5 |> should equal 0,10
-        calculate 0 600 250 |> should equal -50,550
+        calculate 10 20 5 |> should equal 0, 10
+        calculate 0 600 250 |> should equal -50, 550
 
     [<Test>]
     let ``09 Using a value defined in an inner scope`` () =
@@ -123,6 +124,6 @@ module ``15: Advanced techniques`` =
                 | 0 -> 10
                 | 1 -> 65
             fun x -> result - x
-        g 5 8 |> should equal __
-        g 8 5 |> should equal __
+        g 5 8 |> should equal 57
+        g 8 5 |> should equal 5
         // PS. I hope this one brought you some closure.

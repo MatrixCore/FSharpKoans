@@ -261,19 +261,19 @@ or something else), it's likely that you'll be able to use a fold.
     // it?
 
     [<Test>] ()
-    (*let ``16 Folding, the hard way`` () =
+    let ``16 Folding, the hard way`` () =
         let fold (f : 'a -> 'b -> 'a) (initialState : 'a) (xs : 'b list) : 'a =
-            let rec innerFold xs out =
+            let rec innerFold xs acc =
                 match xs with
-                | [] -> out
-                | a::rest -> innerFold rest (out)
-            innerFold xs out // write a function to multiply the elements of a list  
+                | [] -> acc
+                | elem::rest -> innerFold rest (f elem acc)
+            innerFold xs initialState // write a function to multiply the elements of a list  
             // write a function to do a fold.
         fold (+) 0 [1;2;3;4] |> should equal 10
         fold (*) 2 [1;2;3;4] |> should equal 48
         fold (fun state item -> sprintf "%s %s" state item) "items:" ["dog"; "cat"; "bat"; "rat"]
         |> should equal "items: dog cat bat rat"
-        fold (fun state item -> state + float item + 0.5) 0.8 [1;3;5;7] |> should equal 18.8 *)
+        fold (fun state item -> state + float item + 0.5) 0.8 [1.0;3.0;5.0;7.0] |> should equal 18.8
 
     // Hint: https://msdn.microsoft.com/en-us/library/ee353894.aspx
     [<Test>]
@@ -355,13 +355,13 @@ or something else), it's likely that you'll be able to use a fold.
         tryFind (fun x -> x>450) [100;85;25;55;6] |> should equal None
 
     // List.tryPick
-    (* [<Test>]
+    [<Test>]
     let ``22 tryPick: find the first matching element, if any, and transform it`` () =
         let tryPick (p : 'a -> 'b option) (xs : 'a list) : 'b option =
             let rec innerFind xs =
                 match xs with
                     | elem::rest -> match (p elem) with 
-                                    | Some thing -> (Some (thing elem))
+                                    | Some(p) -> (Some(p))
                                     | None -> innerFind rest
                     | [] -> None 
             innerFind xs // Does this: https://msdn.microsoft.com/en-us/library/ee353814.aspx
@@ -378,7 +378,7 @@ or something else), it's likely that you'll be able to use a fold.
             | _ -> None
         tryPick g ["billabong!!"; "in the house!"; "yolo!"; "wut!"] |> should equal (Some "yolo!-yolo!-yolo!")
         tryPick g ["qwerty"; "khazad-dum"] |> should equal (Some "Yo!")
-        tryPick g ["And the winner is..."] |> should equal None *)
+        tryPick g ["And the winner is..."] |> should equal None 
 
     (*
         There are also the functions List.pick and List.find, which do what
@@ -389,25 +389,26 @@ or something else), it's likely that you'll be able to use a fold.
     *)
 
     // List.choose
-    (* [<Test>]
+    [<Test>]
     let ``23 choose: find all matching elements, and transform them`` () =
         // Think about this: why does the signature of `choose` have to be like this?
         // - why can't it take an 'a->'b, instead of an 'a->'b option ?
         // - why does it return a 'b list, and not a 'b list option ?
         let choose (p : 'a -> 'b option) (xs : 'a list) : 'b list =
-            let rec innerChoose xs =
+            let rec innerChoose xs out =
                 match xs with
                   | elem::rest -> match (p elem) with
-                                  | Some(func) -> (func elem)
-                                  | None -> innerChoose rest
-                  | [] -> None
-            innerChoose xs // Does this: https://msdn.microsoft.com/en-us/library/ee353456.aspx
+                                  | Some(result) -> innerChoose rest (out@[result])
+                                  | None -> innerChoose rest out
+                  | [] -> out
+            innerChoose xs [] // Does this: https://msdn.microsoft.com/en-us/library/ee353456.aspx
 
         let f x =
             match x<=45 with
             | true -> Some(x*2)
             | _ -> None
-        choose f [100;85;25;55;6] |> should equal [50;12]
+        let a = choose f [100;85;25;55;6] 
+        a |> should equal [50;12]
         let g x =
             match String.length x with
             | 1 | 3 | 5 | 7 | 9 -> Some <| String.concat "-" [x;x;x]
@@ -415,12 +416,16 @@ or something else), it's likely that you'll be able to use a fold.
             | _ -> None
         choose g ["billabong!!"; "in the house!"; "yolo!"; "wut!"] |> should equal ["yolo!-yolo!-yolo!"; "Yo!"]
         choose g ["qwerty"; "khazad-dum"] |> should equal ["Yo!"]
-        choose g ["And the winner is..."] |> should equal [] *)
+        choose g ["And the winner is..."] |> should equal []
 
     [<Test>]
     let ``24 mapi: like map, but passes along an item index as well`` () =
         let mapi (f : int -> 'a -> 'b) (xs : 'a list) : 'b list =
-            __ // Does this: https://msdn.microsoft.com/en-us/library/ee353425.aspx
+            let rec innerMapi xs i out =
+              match xs with
+              | [] -> out
+              | elem::rest -> innerMapi rest (i+1) (out@[f i elem])
+            innerMapi xs 0 [] // Does this: https://msdn.microsoft.com/en-us/library/ee353425.aspx
         mapi (fun i x -> -i, x+1) [9;8;7;6] |> should equal [0,10; -1,9; -2,8; -3,7]
         let hailstone i t =
             match i%2 with
