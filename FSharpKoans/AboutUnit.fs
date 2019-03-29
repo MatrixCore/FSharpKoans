@@ -55,10 +55,10 @@ module ``15: Advanced techniques`` =
             | _ -> fun () -> "Nothing to do"
         scrollPositions |> should be ofType<(unit -> string) list>
         getWorkAtPosition |> should be ofType<(int -> unit -> string)>
-        getWorkAtPosition 3 |> should be ofType<(int -> unit -> string)>
-        (getWorkAtPosition 3) () |> should be ofType<int -> unit -> string>
-        getWorkAtPosition 250 |> should be ofType<int -> unit -> string>
-        (getWorkAtPosition 250) () |> should be ofType<FILL_ME_IN>
+        (getWorkAtPosition 3) |> should be ofType<(unit -> string)>
+        (getWorkAtPosition 3) () |> should be ofType<string>
+        getWorkAtPosition 250 |> should be ofType<unit -> string>
+        (getWorkAtPosition 250) () |> should be ofType<string>
         (getWorkAtPosition 5) () |> should equal "Load video"
         (getWorkAtPosition -7) () |> should equal "Nothing to do"
 
@@ -101,8 +101,7 @@ module ``15: Advanced techniques`` =
         // Extending a bit more, what do you do when you want to apply a function,
         // but modify the result before you give it back?
         let f animal noise = animal + " says " + noise
-        let cows = fun x word -> "cow says " + word + ", de gozaru" // <-- multiple words on this line, or you may want to make this a multi-line thing.  You MUST use `f`.
-        let a = cows "moo"
+        let cows word = f "cow" (word + ", de gozaru") // <-- multiple words on this line, or you may want to make this a multi-line thing.  You MUST use `f`.
         cows "moo" |> should equal "cow says moo, de gozaru"
         cows "MOOooOO" |> should equal "cow says MOOooOO, de gozaru"
 
@@ -110,10 +109,10 @@ module ``15: Advanced techniques`` =
     let ``08 Getting closure`` () =
         let calculate initial final = // note the number of inputs.
             let middle = (final - initial) / 2
-            fun t -> t-middle, t+middle
+            fun t -> t - middle, t + middle
         // note the number of inputs provided below.  Do you see why I can do this?
-        calculate 10 20 5 |> should equal 0, 10
-        calculate 0 600 250 |> should equal -50, 550
+        calculate 10 20 5 |> should equal (0, 10)
+        calculate 0 600 250 |> should equal (-50, 550)
 
     [<Test>]
     let ``09 Using a value defined in an inner scope`` () =
